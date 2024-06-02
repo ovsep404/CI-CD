@@ -106,6 +106,8 @@ jobs:  # Tâches à exécuter
       - name: Deploy to server  # Étape de déploiement sur le serveur
         run: rsync -avz --exclude='.env' -e 'ssh -p 5022' --delete . ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }}:${{ secrets.DEPLOY_PATH }}  # Utilise rsync pour synchroniser les fichiers avec le serveur, en excluant les fichiers .env
 
+```
+
 ## Déploiement
 
 Le processus de déploiement est automatisé grâce à GitHub Actions. Toutes les étapes nécessaires pour déployer l'application sont définies dans le fichier `.github/workflows/main.yml`.
