@@ -1,34 +1,34 @@
-name: Deploy
+name: Deploy  # Nom du workflow
 
-on:
-  push:
-    branches:
-      - main
-    paths:
-      - '**'
+on:  # Déclencheur du workflow
+  push:  # Déclenché lors d'un push
+    branches:  # Sur la branche spécifiée
+      - main  # Branche 'main'
+    paths:  # Pour tous les chemins
+      - '**'  # Correspond à tous les fichiers
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+jobs:  # Tâches à exécuter
+  deploy:  # Tâche de déploiement
+    runs-on: ubuntu-latest  # Exécute la tâche sur la dernière version d'Ubuntu
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    steps:  # Étapes de la tâche
+      - name: Checkout code  # Étape de récupération du code
+        uses: actions/checkout@v2  # Utilise l'action de checkout de GitHub
 
-      - name: Setup SSH and rsync
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
-          DEPLOY_SERVER: ${{ secrets.DEPLOY_SERVER }}
-          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -p 5022 ${{ secrets.DEPLOY_SERVER }} >> ~/.ssh/known_hosts
+      - name: Setup SSH and rsync  # Étape de configuration de SSH et rsync
+        env:  # Variables d'environnement
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # Clé privée SSH
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}  # Utilisateur pour le déploiement
+          DEPLOY_SERVER: ${{ secrets.DEPLOY_SERVER }}  # Serveur de déploiement
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}  # Chemin de déploiement sur le serveur
+        run: |  # Commandes à exécuter
+          mkdir -p ~/.ssh  # Crée le dossier .ssh si nécessaire
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa  # Crée le fichier id_rsa avec la clé privée SSH
+          chmod 600 ~/.ssh/id_rsa  # Modifie les permissions du fichier pour qu'il soit lisible uniquement par l'utilisateur
+          ssh-keyscan -p 5022 ${{ secrets.DEPLOY_SERVER }} >> ~/.ssh/known_hosts  # Ajoute le serveur aux hôtes connus de SSH
 
-      - name: Test SSH connection
-        run: ssh -vvv -p 5022 -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }} "echo 'Connection successful'" || true
+      - name: Test SSH connection  # Étape de test de la connexion SSH
+        run: ssh -vvv -p 5022 -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }} "echo 'Connection successful'" || true  # Tente de se connecter au serveur et affiche un message en cas de succès
 
-      - name: Deploy to server
-        run: rsync -avz --exclude='.env' -e 'ssh -p 5022' --delete . ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }}:${{ secrets.DEPLOY_PATH }}
+      - name: Deploy to server  # Étape de déploiement sur le serveur
+        run: rsync -avz --exclude='.env' -e 'ssh -p 5022' --delete . ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }}:${{ secrets.DEPLOY_PATH }}  # Utilise rsync pour synchroniser les fichiers avec le serveur, en excluant les fichiers .env
