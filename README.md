@@ -60,6 +60,7 @@ Voici la page simple que j'ai déployée sur mon serveur Planethoster : [http://
        ```markdown
        Exemple: commence par -----BEGIN OPENSSH PRIVATE KEY----- et finit par -----END OPENSSH PRIVATE KEY-----
        ```
+      ![Secrets](./images/secrets.png) 
  
 ## Création du fichier de workflow GitHub Actions
 
