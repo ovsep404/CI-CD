@@ -21,7 +21,7 @@ Ce guide détaille les étapes nécessaires pour mettre en place un flux de trav
      - Sur Windows (dans PowerShell) : `Get-Content C:\Users\yourusername\.ssh\<nom du clé>`
      - Sur Windows (dans Git Bash) : `cat /c/Users/yourusername/.ssh/<nom du clé>`
    - Copiez le contenu affiché, c'est votre clé publique SSH.
-   - Naviguez vers l'onglet `Fichiers` puis `Clés SSH`.
+   - Naviguez vers l'onglet sur Planethoster `Fichiers` puis `Clés SSH`.
    - Ajoutez la clé publique que vous avez générée.
 
 ## Configuration du domaine
