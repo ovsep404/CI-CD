@@ -1,6 +1,8 @@
 # Guide de déploiement CI/CD avec GitHub Actions sur Planethoster
 
-Ce guide détaille les étapes nécessaires pour mettre en place un flux de travail CI/CD en utilisant GitHub Actions pour déployer une application sur un serveur Planethoster lorsque des changements sont poussés sur la branche `main`.
+Ce guide détaille les étapes nécessaires pour mettre en place un simple flux de travail CI/CD en utilisant GitHub Actions pour déployer une application sur un serveur Planethoster lorsque des changements sont poussés sur la branche `main`.
+
+Voici la page simple que j'ai déployée sur mon serveur Planethoster : [http://cicd.ovsep-simonian.mds-montpellier.yt/](http://cicd.ovsep-simonian.mds-montpellier.yt/).
 
 ## Prérequis
 
@@ -17,7 +19,7 @@ Ce guide détaille les étapes nécessaires pour mettre en place un flux de trav
 
 3. **Ajoutez votre clé SSH publique** :
    - Pour récupérer votre clé publique, ouvrez votre terminal et tapez :
-     - Sur Linux : `cat ~/.ssh/id_rsa.pub`
+     - Sur Linux : `cat ~/.ssh/<nom du clé>`
      - Sur Windows (dans PowerShell) : `Get-Content C:\Users\yourusername\.ssh\<nom du clé>`
      - Sur Windows (dans Git Bash) : `cat /c/Users/yourusername/.ssh/<nom du clé>`
    - Copiez le contenu affiché, c'est votre clé publique SSH.
@@ -28,16 +30,19 @@ Ce guide détaille les étapes nécessaires pour mettre en place un flux de trav
 
 1. **Ajoutez un domaine à votre espace Planethoster** :
    - Naviguez vers l'onglet `Domaines`.
-   - Sélectionnez `Sous-Domaines`.
+   - Naviguez vers l'onglet `Gestion des domaines`.
+   - Cliquez sur `Ajouter`.
+   - Sélectionnez `Sous-Domaines`. ou sur `Domaine` si vous souhaitez ajouter un domaine.
    - Ajoutez votre sous-domaine dans le champ approprié.
-   - Validez l'option SSL/TLS pour sécuriser votre sous-domaine.
+   - Cliquez sur `Créer`.
+   - Ensuite Validez l'option SSL/TLS pour sécuriser votre sous-domaine.
 
 ## Configuration du projet GitHub
 
 1. **Créez un nouveau repository GitHub** ou accédez à un repository existant.
 
 2. **Ajoutez des secrets pour la configuration** :
-   - Allez dans `Settings > Secrets and variables > Actions secrets`.
+   - Allez dans `Settings (de ton repository) > Security > Secrets and variables > Actions secrets`.
    - Ajoutez les secrets suivants :
      - `DEPLOY_PATH` : Chemin absolu vers le dossier du projet sur le serveur.   
        ```markdown
@@ -56,7 +61,6 @@ Ce guide détaille les étapes nécessaires pour mettre en place un flux de trav
        Exemple: commence par -----BEGIN OPENSSH PRIVATE KEY----- et finit par -----END OPENSSH PRIVATE KEY-----
        ```
  
-
 ## Création du fichier de workflow GitHub Actions
 
 1. **Créez un dossier pour les workflows** si ce n'est pas déjà fait :
@@ -100,3 +104,15 @@ jobs:  # Tâches à exécuter
 
       - name: Deploy to server  # Étape de déploiement sur le serveur
         run: rsync -avz --exclude='.env' -e 'ssh -p 5022' --delete . ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }}:${{ secrets.DEPLOY_PATH }}  # Utilise rsync pour synchroniser les fichiers avec le serveur, en excluant les fichiers .env
+
+## Déploiement
+
+Le processus de déploiement est automatisé grâce à GitHub Actions. Toutes les étapes nécessaires pour déployer l'application sont définies dans le fichier `.github/workflows/main.yml`.
+
+Pour suivre le processus de déploiement :
+
+1. Allez dans l'onglet `Actions` de votre dépôt GitHub.
+2. Sélectionnez le workflow de déploiement dans la liste.
+3. Vous pouvez voir le détail de chaque exécution du workflow, y compris les logs de chaque étape.
+
+Cela vous permet de suivre le processus de déploiement et de diagnostiquer d'éventuels problèmes.
