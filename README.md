@@ -132,6 +132,6 @@ En fait, le serveur et ton GitHub communiquent via la clé privée et la clé pu
 5. PlanetHoster vérifie cette identité avec la clé publique que tu as ajoutée.
 
 En résumé :
-Clé publique sur GitHub et PlanetHoster.
-Clé privée utilisée par GitHub pour s'authentifier.
-Cette combinaison de clés assure que les communications entre GitHub et PlanetHoster sont sécurisées et autorisées.
+1. Clé publique sur GitHub et PlanetHoster.
+2. Clé privée utilisée par GitHub pour s'authentifier.
+3. Cette combinaison de clés assure que les communications entre GitHub et PlanetHoster sont sécurisées et autorisées.
