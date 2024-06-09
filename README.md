@@ -119,3 +119,19 @@ Pour suivre le processus de déploiement :
 3. Vous pouvez voir le détail de chaque exécution du workflow, y compris les logs de chaque étape.
 
 Cela vous permet de suivre le processus de déploiement et de diagnostiquer d'éventuels problèmes.
+
+
+## En résumé:
+
+En fait, le serveur et ton GitHub communiquent via la clé privée et la clé publique.
+
+1. Tu génères une paire de clés SSH sur ton ordinateur : une clé publique et une clé privée.
+2. la clé publique est ajoutée à ton compte GitHub et au serveur PlanetHoster.
+3. La clé privée est gardée secrète sur ton ordinateur et dans les paramètres de sécurité de ton dépôt GitHub
+4. Quand GitHub veut envoyer du code au serveur PlanetHoster, il utilise la clé privée pour prouver son identité.
+5. PlanetHoster vérifie cette identité avec la clé publique que tu as ajoutée.
+
+En résumé :
+Clé publique sur GitHub et PlanetHoster.
+Clé privée utilisée par GitHub pour s'authentifier.
+Cette combinaison de clés assure que les communications entre GitHub et PlanetHoster sont sécurisées et autorisées.
